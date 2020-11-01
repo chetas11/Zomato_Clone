@@ -1,0 +1,30 @@
+.top-img {
+  width: 100%;
+  height: 650px;
+  position: relative;
+}
+
+.title {
+  top: 50px;
+  color: black;
+  font-family: "Anton", sans-serif;
+  font-size: 5rem;
+  font-style: italic;
+}
+
+.search {
+  width: 100%;
+}
+
+.card {
+  border-radius: 20px;
+}
+
+.card:hover {
+  transform: scale(1.1);
+  transition: ease-in-out;
+}
+
+i {
+  color: White;
+}
