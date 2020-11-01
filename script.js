@@ -28,6 +28,14 @@ sendGetRestaurant = async (query) => {
             }
         });
 
+        let Searchbutton = document.getElementById("search-button");
+
+        Searchbutton.addEventListener("click", ()=> {
+                ResultRow.innerHTML = ""
+                sendGetRestaurant(InputText);
+        });
+        
+
 
 let ResultRow = document.getElementById("results-row");
 
