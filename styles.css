@@ -28,3 +28,12 @@
 i {
   color: White;
 }
+
+p {
+  margin: 0px;
+}
+
+.Cuisines {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}

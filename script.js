@@ -1,12 +1,21 @@
 sendGetRestaurant = async (query) => {
     try {
-        const resp = await fetch("https://developers.zomato.com/api/v2.1/search?q="+query,{
-            headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"}
+        const resp = await fetch("https://developers.zomato.com/api/v2.1/search?entity_id=3&entity_type=city&q="+query+"&count=25",{
+            headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
+            results_shown : "5"
           });
         const data = await resp.json();
         console.log(data)
         for(let i=0; i<data.restaurants.length; i++){
-            CreateCard(data.restaurants[i].restaurant.thumb,data.restaurants[i].restaurant.name)
+            let thumb = data.restaurants[i].restaurant.thumb
+            let name = data.restaurants[i].restaurant.name
+            let address = data.restaurants[i].restaurant.location.address
+            let contact = data.restaurants[i].restaurant.phone_numbers
+            let Avlcuisines = data.restaurants[i].restaurant.cuisines
+            let cost = data.restaurants[i].restaurant.average_cost_for_two
+            let timings = data.restaurants[i].restaurant.timings
+            let rating = data.restaurants[i].restaurant.user_rating.aggregate_rating +" - "+data.restaurants[i].restaurant.user_rating.rating_text
+            CreateResto(thumb,name,address,contact,Avlcuisines,cost,rating,timings)
         }
     } catch (err) {
         console.error(err);
@@ -14,6 +23,8 @@ sendGetRestaurant = async (query) => {
 }
 
         let InputText;
+        let ResultRow = document.getElementById("results-row"); 
+
 
         let Searchbar = document.getElementById("search");
         Searchbar.addEventListener("change", ()=>{
@@ -36,27 +47,40 @@ sendGetRestaurant = async (query) => {
         });
         
 
-
-let ResultRow = document.getElementById("results-row");
-
-
-function CreateCard(url,name){
-    let ResultCol = document.createElement("div");
-    ResultCol.classList.add("col-lg-4","col-md-4","col-sm-6")
-    let Card  = document.createElement("div");
-    Card.classList.add("card")
+function CreateResto(url,name,address,contact,cuisin,cost,rating,timings){
+    let ImageCol = document.createElement("div");
+    ImageCol.classList.add("col-lg-","col-md-4","col-sm-6","mt-3")
+    let DetailsCol = document.createElement("div");
+    DetailsCol.classList.add("col-lg-8","col-md-8","col-sm-8","mt-3")
     let img = document.createElement("img");
     img.src = url;
-    img.alt = "restaurant-img"
-    let CardBody  = document.createElement("div");
-    CardBody.classList.add("card-body");
-    let Title = document.createElement("h5");
-    Title.innerText = name;
-    CardBody.appendChild(Title)
-    Card.appendChild(img)
-    Card.appendChild(CardBody)
-    ResultCol.appendChild(Card)
-    ResultRow.appendChild(ResultCol)
+    let RestoName = document.createElement("h2");
+    RestoName.innerText = name;
+    RestoName.classList.add("mb-3")
+    let RestoCusins = document.createElement("p");
+    RestoCusins.innerText = "Cuisines: "+cuisin
+    RestoCusins.classList.add("Cuisines")
+    let RestoAddress = document.createElement("p");
+    RestoAddress.innerText ="Address: "+ address
+    let RestoContact = document.createElement("p");
+    RestoContact.innerText = "Contact: "+contact
+    let Cost = document.createElement("p");
+    Cost.innerText = "Avg. Cost for Two: "+cost
+    let Rating = document.createElement("p");
+    Rating.innerText = "Ratings: "+rating
+    let Timings = document.createElement("p");
+    Timings.innerText = "Timings: "+timings
+    DetailsCol.appendChild(RestoName)
+    ImageCol.appendChild(img)
+    ResultRow.appendChild(ImageCol)
+    ResultRow.appendChild(DetailsCol)
+    DetailsCol.appendChild(RestoCusins)
+    DetailsCol.appendChild(RestoAddress)
+    DetailsCol.appendChild(RestoContact)
+    DetailsCol.appendChild(Cost)
+    DetailsCol.appendChild(Timings)
+    DetailsCol.appendChild(Rating)
+    
 }
 
 
