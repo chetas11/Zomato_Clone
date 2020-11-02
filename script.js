@@ -1,6 +1,6 @@
 sendGetRestaurant = async (query) => {
     try {
-        const resp = await fetch("https://developers.zomato.com/api/v2.1/search?entity_id=3&entity_type=city&q="+query+"&count=25",{
+        const resp = await fetch("https://developers.zomato.com/api/v2.1/search?q="+query+"&count=25",{
             headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
             results_shown : "5"
           });
