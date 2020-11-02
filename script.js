@@ -15,6 +15,11 @@ sendGetRestaurant = async (query) => {
             let cost = data.restaurants[i].restaurant.average_cost_for_two
             let timings = data.restaurants[i].restaurant.timings
             let rating = data.restaurants[i].restaurant.user_rating.aggregate_rating +" - "+data.restaurants[i].restaurant.user_rating.rating_text
+            
+            if(thumb===""){
+                thumb = "./images/no-img.jpg"
+            }
+
             CreateResto(thumb,name,address,contact,Avlcuisines,cost,rating,timings)
         }
     } catch (err) {
@@ -49,10 +54,11 @@ sendGetRestaurant = async (query) => {
 
 function CreateResto(url,name,address,contact,cuisin,cost,rating,timings){
     let ImageCol = document.createElement("div");
-    ImageCol.classList.add("col-lg-","col-md-4","col-sm-6","mt-3")
+    ImageCol.classList.add("col-lg-","col-md-4","col-sm-6","mt-3","img-div","text-center")
     let DetailsCol = document.createElement("div");
-    DetailsCol.classList.add("col-lg-8","col-md-8","col-sm-8","mt-3")
+    DetailsCol.classList.add("col-lg-8","col-md-8","col-sm-8","mt-3","details-div")
     let img = document.createElement("img");
+    img.classList.add("resto-images")
     img.src = url;
     let RestoName = document.createElement("h2");
     RestoName.innerText = name;
