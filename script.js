@@ -40,6 +40,7 @@ sendGetRestaurant = async (query) => {
             if (event.code === "Enter") {
                 event.preventDefault();
                 ResultRow.innerHTML = ""
+                Searchbar.value = ""
                 sendGetRestaurant(InputText);
             }
         });
@@ -48,6 +49,7 @@ sendGetRestaurant = async (query) => {
 
         Searchbutton.addEventListener("click", ()=> {
                 ResultRow.innerHTML = ""
+                Searchbar.value = ""
                 sendGetRestaurant(InputText);
         });
         
