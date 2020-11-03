@@ -4,13 +4,17 @@ body {
 
 .container-fluid {
   background-color: #f05454;
-  padding: 50px;
+  padding: 80px;
 }
 
 .top-img {
   width: 100%;
   height: 650px;
   position: relative;
+}
+
+.btn {
+  display: none;
 }
 
 .title {
@@ -23,6 +27,30 @@ body {
 
 .search {
   width: 100%;
+  display: inline;
+  margin: 10px 0px;
+}
+#location {
+  border-right: 1px solid grey;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+#search {
+  border-left: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.text-boxes {
+  margin: 0px;
+  padding: 0px;
+}
+
+.text-boxes i {
+  position: absolute;
+  top: 22px;
+  right: 15px;
 }
 
 .card {
@@ -34,8 +62,12 @@ body {
   transition: ease-in-out;
 }
 
+i:hover {
+  color: #f05454;
+}
+
 i {
-  color: White;
+  color: grey;
 }
 
 p {
@@ -60,4 +92,20 @@ p {
   width: 50%;
   border: 2px solid lightgray;
   padding: 5px;
+}
+
+@media screen and (max-width: 500px) {
+  .text-boxes i {
+    display: none;
+  }
+
+  .btn {
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .title {
+    font-size: 2rem;
+  }
 }

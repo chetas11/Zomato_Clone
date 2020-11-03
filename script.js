@@ -1,6 +1,18 @@
-sendGetRestaurant = async (query) => {
+        let LocationText;
+        let SearchText;
+        let EntityId;
+        let EntityType;
+        let ResultRow = document.getElementById("results-row");
+        let Searchbutton = document.getElementById("search-button");
+        let Searchbar = document.getElementById("search");
+        let Locationbar = document.getElementById("location");
+        let SearchIcon = document.getElementById("search-icon");
+
+
+
+sendGetRestaurant = async (query,entityid,entitytype) => {
     try {
-        const resp = await fetch("https://developers.zomato.com/api/v2.1/search?q="+query+"&count=25",{
+        const resp = await fetch("https://developers.zomato.com/api/v2.1/search?entity_id="+entityid+"&entity_type="+entitytype+"&q="+query,{
             headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
             results_shown : "5"
           });
@@ -27,13 +39,30 @@ sendGetRestaurant = async (query) => {
     }
 }
 
-        let InputText;
-        let ResultRow = document.getElementById("results-row"); 
 
 
-        let Searchbar = document.getElementById("search");
+
+GetLocations = async (location) => {
+    try {
+        const resp = await fetch("https://developers.zomato.com/api/v2.1/locations?query="+location,{
+            headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
+          });
+        const data = await resp.json();
+        EntityId = data.location_suggestions[0].entity_id;
+        EntityType = data.location_suggestions[0].entity_type;
+    } catch (err) {
+        console.error(err);
+    }
+}
+        
         Searchbar.addEventListener("change", ()=>{
-            InputText = Searchbar.value
+            SearchText = Searchbar.value
+        })
+
+        Locationbar.addEventListener("change", ()=>{
+            LocationText = Locationbar.value
+            GetLocations(LocationText)
+            console.log(LocationText)
         })
 
         Searchbar.addEventListener("keyup", function(event) {
@@ -41,16 +70,32 @@ sendGetRestaurant = async (query) => {
                 event.preventDefault();
                 ResultRow.innerHTML = ""
                 Searchbar.value = ""
-                sendGetRestaurant(InputText);
+                Locationbar.value = ""
+                sendGetRestaurant(SearchText,EntityId,EntityType);
             }
         });
 
-        let Searchbutton = document.getElementById("search-button");
-
-        Searchbutton.addEventListener("click", ()=> {
+        SearchIcon.addEventListener("click", ()=> {
+            if(Searchbar.value){
                 ResultRow.innerHTML = ""
                 Searchbar.value = ""
-                sendGetRestaurant(InputText);
+                Locationbar.value = ""
+                sendGetRestaurant(SearchText,EntityId,EntityType);
+            }else{
+                alert("Enter restaurants/cuisines/dish")
+            }       
+        });
+
+
+        Searchbutton.addEventListener("click", ()=> {
+            if(Searchbar.value){
+                ResultRow.innerHTML = ""
+                Searchbar.value = ""
+                Locationbar.value = ""
+                sendGetRestaurant(SearchText,EntityId,EntityType);
+            }else{
+                alert("Enter restaurants/cuisines/dish")
+            }       
         });
         
 
