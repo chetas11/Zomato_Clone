@@ -9,6 +9,45 @@
         let SearchIcon = document.getElementById("search-icon");
 
 
+        document.addEventListener("DOMContentLoaded" , ()=>{
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function(position){
+                    let lat = position.coords.latitude
+                    let long = position.coords.longitude
+                    searchRestroByLocation(lat,long)
+                })
+            }
+        })
+
+
+searchRestroByLocation = async (lat, long) => {
+    try {
+        const resp = await fetch(`https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${long}` ,{
+            headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
+          });
+        const data = await resp.json();
+        for(let i=0; i<data.restaurants.length; i++){
+            let thumb = data.restaurants[i].restaurant.thumb
+            let name = data.restaurants[i].restaurant.name
+            let address = data.restaurants[i].restaurant.location.address
+            let contact = data.restaurants[i].restaurant.phone_numbers
+            let Avlcuisines = data.restaurants[i].restaurant.cuisines
+            let cost = data.restaurants[i].restaurant.average_cost_for_two
+            let timings = data.restaurants[i].restaurant.timings
+            let rating = data.restaurants[i].restaurant.user_rating.aggregate_rating +" - "+data.restaurants[i].restaurant.user_rating.rating_text
+            
+            if(thumb===""){
+                thumb = "./images/no-img.jpg"
+            }
+
+            CreateResto(thumb,name,address,contact,Avlcuisines,cost,rating,timings)
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
 
 sendGetRestaurant = async (query,entityid,entitytype) => {
     try {
