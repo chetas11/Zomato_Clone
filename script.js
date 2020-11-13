@@ -49,6 +49,11 @@ searchRestroByLocation = async (lat, long) => {
 
 
 
+
+
+
+
+
 sendGetRestaurant = async (query,entityid,entitytype) => {
     try {
         const resp = await fetch("https://developers.zomato.com/api/v2.1/search?entity_id="+entityid+"&entity_type="+entitytype+"&q="+query,{
@@ -56,7 +61,6 @@ sendGetRestaurant = async (query,entityid,entitytype) => {
             results_shown : "5"
           });
         const data = await resp.json();
-        console.log(data)
         for(let i=0; i<data.restaurants.length; i++){
             let thumb = data.restaurants[i].restaurant.thumb
             let name = data.restaurants[i].restaurant.name
@@ -81,6 +85,8 @@ sendGetRestaurant = async (query,entityid,entitytype) => {
 
 
 
+
+
 GetLocations = async (location) => {
     try {
         const resp = await fetch("https://developers.zomato.com/api/v2.1/locations?query="+location,{
@@ -93,6 +99,40 @@ GetLocations = async (location) => {
         console.error(err);
     }
 }
+
+    let suggestionPanel = document.querySelector(".suggestions")
+
+    const SearchSuggestion = async (searchText) =>{
+            suggestionPanel.innerHTML = ""
+            const resp =  await fetch("https://developers.zomato.com/api/v2.1/search?&q="+searchText,{
+            headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
+            });
+            let data = await resp.json();
+            let Suggestions = data.restaurants.filter((restaurantName) => {
+                return restaurantName.restaurant.name.toLowerCase().startsWith(searchText.toLowerCase());
+            })
+
+            Suggestions.forEach((suggested) =>{
+                const div = document.createElement("div")
+                div.innerHTML = suggested.restaurant.name
+                suggestionPanel.appendChild(div)
+            })
+            
+            if(searchText == ""){
+                suggestionPanel.innerHTML = ""
+            }
+
+    }
+
+    Searchbar.addEventListener("input" , () => {
+        SearchSuggestion(Searchbar.value)
+    
+    })
+
+
+            
+
+
         
         Searchbar.addEventListener("change", ()=>{
             SearchText = Searchbar.value
@@ -101,7 +141,6 @@ GetLocations = async (location) => {
         Locationbar.addEventListener("change", ()=>{
             LocationText = Locationbar.value
             GetLocations(LocationText)
-            console.log(LocationText)
         })
 
         Searchbar.addEventListener("keyup", function(event) {
@@ -110,6 +149,7 @@ GetLocations = async (location) => {
                 ResultRow.innerHTML = ""
                 Searchbar.value = ""
                 Locationbar.value = ""
+                suggestionPanel.innerHTML = ""
                 sendGetRestaurant(SearchText,EntityId,EntityType);
             }
         });
@@ -119,6 +159,7 @@ GetLocations = async (location) => {
                 ResultRow.innerHTML = ""
                 Searchbar.value = ""
                 Locationbar.value = ""
+                suggestionPanel.innerHTML = ""
                 sendGetRestaurant(SearchText,EntityId,EntityType);
             }else{
                 alert("Enter restaurants/cuisines/dish")
