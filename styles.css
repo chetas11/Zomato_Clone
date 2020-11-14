@@ -108,6 +108,20 @@ p {
   background-color: white;
 }
 
+.location-suggestions > div {
+  padding: 8px;
+  border-top: 1px solid #666;
+  color: #666;
+  text-align: left;
+  background-color: white;
+}
+
+.selected:hover {
+  background-color: #f05454;
+  color: white;
+  border: 1px solid black;
+}
+
 @media screen and (max-width: 500px) {
   .text-boxes i {
     display: none;

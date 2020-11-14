@@ -7,6 +7,18 @@
         let Searchbar = document.getElementById("search");
         let Locationbar = document.getElementById("location");
         let SearchIcon = document.getElementById("search-icon");
+        let suggestionPanel = document.querySelector(".suggestions")
+        let LocationPanel = document.querySelector(".location-suggestions")
+
+        // let selectedLocatons = document.querySelectorAll(".location")
+        
+
+
+        // selectedLocatons.forEach((selected)=>{
+        //     selected.addEventListener("click",()=>{
+        //     Locationbar.innerText  = selectedLocatons.textContent ;
+        //     })
+        // })
 
 
         document.addEventListener("DOMContentLoaded" , ()=>{
@@ -46,13 +58,6 @@ searchRestroByLocation = async (lat, long) => {
         console.error(err);
     }
 }
-
-
-
-
-
-
-
 
 sendGetRestaurant = async (query,entityid,entitytype) => {
     try {
@@ -100,7 +105,6 @@ GetLocations = async (location) => {
     }
 }
 
-    let suggestionPanel = document.querySelector(".suggestions")
 
     const SearchSuggestion = async (searchText) =>{
             suggestionPanel.innerHTML = ""
@@ -114,19 +118,64 @@ GetLocations = async (location) => {
 
             Suggestions.forEach((suggested) =>{
                 const div = document.createElement("div")
+                div.classList.add("selected","query")
                 div.innerHTML = suggested.restaurant.name
                 suggestionPanel.appendChild(div)
             })
+
+
+        //                 let selectedSuggestions = document.querySelectorAll(".query")
+
+        //                 selectedSuggestions.forEach((selected)=>{
+        //                 selected.addEventListener("click",()=>{
+        //                 Searchbar.innerText  = selectedSuggestions.inner;
+        //                 console.log(selectedSuggestions.innerHTML)
+        //     })
+        // })           
             
             if(searchText == ""){
                 suggestionPanel.innerHTML = ""
             }
-
     }
+
+    const LocationSuggestion = async (locationText) =>{
+            LocationPanel.innerHTML = ""
+            const resp =  await fetch("https://developers.zomato.com/api/v2.1/locations?query="+locationText,{
+            headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
+            });
+            let data = await resp.json();
+
+            data.location_suggestions.forEach((location) =>{
+                const div = document.createElement("div")
+                div.classList.add("selected","location")
+                div.innerHTML = location.title
+                LocationPanel.appendChild(div)
+            })
+            
+            if(locationText == ""){
+                LocationPanel.innerHTML = ""
+            }
+    }
+
+
 
     Searchbar.addEventListener("input" , () => {
         SearchSuggestion(Searchbar.value)
+    })
+
+    Searchbar.addEventListener("blur" , () => {
+        suggestionPanel.innerHTML = ""
+        LocationPanel.innerHTML = ""
+    })
+
+    Locationbar.addEventListener("blur" , () => {
+        suggestionPanel.innerHTML = ""
+        LocationPanel.innerHTML = ""
+    })
     
+
+    Locationbar.addEventListener("input" , () => {
+        LocationSuggestion(Locationbar.value)
     })
 
 
@@ -134,16 +183,16 @@ GetLocations = async (location) => {
 
 
         
-        Searchbar.addEventListener("change", ()=>{
-            SearchText = Searchbar.value
-        })
+    Searchbar.addEventListener("change", ()=>{
+        SearchText = Searchbar.value
+    })
 
-        Locationbar.addEventListener("change", ()=>{
-            LocationText = Locationbar.value
-            GetLocations(LocationText)
-        })
+    Locationbar.addEventListener("change", ()=>{
+        LocationText = Locationbar.value
+        GetLocations(LocationText)
+    })
 
-        Searchbar.addEventListener("keyup", function(event) {
+    Searchbar.addEventListener("keyup", function(event) {
             if (event.code === "Enter") {
                 event.preventDefault();
                 ResultRow.innerHTML = ""
@@ -215,6 +264,8 @@ function CreateResto(url,name,address,contact,cuisin,cost,rating,timings){
     DetailsCol.appendChild(Rating)
     
 }
+
+
 
 
 
