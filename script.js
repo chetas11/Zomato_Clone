@@ -121,17 +121,18 @@ GetLocations = async (location) => {
                 div.classList.add("selected","query")
                 div.innerHTML = suggested.restaurant.name
                 suggestionPanel.appendChild(div)
+
+                let selectedSuggestions = document.querySelectorAll(".query")
+                selectedSuggestions.forEach((selected)=>{
+                selected.addEventListener("click",()=>{
+                Searchbar.value  = selected.innerText;
+                suggestionPanel.innerHTML = ""
+                console.log(selectedSuggestions)
+            })
+        })    
             })
 
-
-        //                 let selectedSuggestions = document.querySelectorAll(".query")
-
-        //                 selectedSuggestions.forEach((selected)=>{
-        //                 selected.addEventListener("click",()=>{
-        //                 Searchbar.innerText  = selectedSuggestions.inner;
-        //                 console.log(selectedSuggestions.innerHTML)
-        //     })
-        // })           
+       
             
             if(searchText == ""){
                 suggestionPanel.innerHTML = ""
@@ -163,15 +164,15 @@ GetLocations = async (location) => {
         SearchSuggestion(Searchbar.value)
     })
 
-    Searchbar.addEventListener("blur" , () => {
-        suggestionPanel.innerHTML = ""
-        LocationPanel.innerHTML = ""
-    })
+    // Searchbar.addEventListener("blur" , () => {
+    //     suggestionPanel.innerHTML = ""
+    //     LocationPanel.innerHTML = ""
+    // })
 
-    Locationbar.addEventListener("blur" , () => {
-        suggestionPanel.innerHTML = ""
-        LocationPanel.innerHTML = ""
-    })
+    // Locationbar.addEventListener("blur" , () => {
+    //     suggestionPanel.innerHTML = ""
+    //     LocationPanel.innerHTML = ""
+    // })
     
 
     Locationbar.addEventListener("input" , () => {

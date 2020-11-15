@@ -120,6 +120,7 @@ p {
   background-color: #f05454;
   color: white;
   border: 1px solid black;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 500px) {
