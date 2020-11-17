@@ -74,11 +74,13 @@ i {
 
 p {
   margin: 0px;
+  color: #373a40;
 }
 
 .Cuisines {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
+  color: #f05454;
 }
 
 .img-div {
@@ -93,12 +95,8 @@ p {
 .resto-images {
   width: 50%;
   border: 2px solid lightgray;
-  padding: 5px;
+  box-shadow: 5px 8px #aaaaaa;
 }
-
-/* .suggestions {
-  border-top: 2px solid #999;
-} */
 
 .suggestions > div {
   padding: 8px;

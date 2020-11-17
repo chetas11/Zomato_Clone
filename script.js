@@ -10,17 +10,6 @@
         let suggestionPanel = document.querySelector(".suggestions")
         let LocationPanel = document.querySelector(".location-suggestions")
 
-        // let selectedLocatons = document.querySelectorAll(".location")
-        
-
-
-        // selectedLocatons.forEach((selected)=>{
-        //     selected.addEventListener("click",()=>{
-        //     Locationbar.innerText  = selectedLocatons.textContent ;
-        //     })
-        // })
-
-
         document.addEventListener("DOMContentLoaded" , ()=>{
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition(function(position){
@@ -38,6 +27,9 @@ searchRestroByLocation = async (lat, long) => {
             headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
           });
         const data = await resp.json();
+
+
+
         for(let i=0; i<data.restaurants.length; i++){
             let thumb = data.restaurants[i].restaurant.thumb
             let name = data.restaurants[i].restaurant.name
@@ -63,9 +55,13 @@ sendGetRestaurant = async (query,entityid,entitytype) => {
     try {
         const resp = await fetch("https://developers.zomato.com/api/v2.1/search?entity_id="+entityid+"&entity_type="+entitytype+"&q="+query,{
             headers: {"user-key": "33a4212611e9fef173ab4eb3a89775df"},
-            results_shown : "5"
           });
         const data = await resp.json();
+        if(data.restaurants.length <= 0){
+            Notfound();
+        }
+
+        console.log(data.restaurants)
         for(let i=0; i<data.restaurants.length; i++){
             let thumb = data.restaurants[i].restaurant.thumb
             let name = data.restaurants[i].restaurant.name
@@ -127,7 +123,6 @@ GetLocations = async (location) => {
                 selected.addEventListener("click",()=>{
                 Searchbar.value  = selected.innerText;
                 suggestionPanel.innerHTML = ""
-                console.log(selectedSuggestions)
             })
         })    
             })
@@ -151,7 +146,17 @@ GetLocations = async (location) => {
                 div.classList.add("selected","location")
                 div.innerHTML = location.title
                 LocationPanel.appendChild(div)
+
+                let selectedLocations = document.querySelectorAll(".location")
+                selectedLocations.forEach((selected)=>{
+                selected.addEventListener("click",()=>{
+                Locationbar.value  = selected.innerText;
+                LocationPanel.innerHTML = ""
             })
+          }) 
+
+          })
+
             
             if(locationText == ""){
                 LocationPanel.innerHTML = ""
@@ -163,16 +168,6 @@ GetLocations = async (location) => {
     Searchbar.addEventListener("input" , () => {
         SearchSuggestion(Searchbar.value)
     })
-
-    // Searchbar.addEventListener("blur" , () => {
-    //     suggestionPanel.innerHTML = ""
-    //     LocationPanel.innerHTML = ""
-    // })
-
-    // Locationbar.addEventListener("blur" , () => {
-    //     suggestionPanel.innerHTML = ""
-    //     LocationPanel.innerHTML = ""
-    // })
     
 
     Locationbar.addEventListener("input" , () => {
@@ -200,6 +195,7 @@ GetLocations = async (location) => {
                 Searchbar.value = ""
                 Locationbar.value = ""
                 suggestionPanel.innerHTML = ""
+                LocationPanel.innerHTML = ""
                 sendGetRestaurant(SearchText,EntityId,EntityType);
             }
         });
@@ -210,6 +206,7 @@ GetLocations = async (location) => {
                 Searchbar.value = ""
                 Locationbar.value = ""
                 suggestionPanel.innerHTML = ""
+                LocationPanel.innerHTML = ""
                 sendGetRestaurant(SearchText,EntityId,EntityType);
             }else{
                 alert("Enter restaurants/cuisines/dish")
@@ -222,6 +219,8 @@ GetLocations = async (location) => {
                 ResultRow.innerHTML = ""
                 Searchbar.value = ""
                 Locationbar.value = ""
+                suggestionPanel.innerHTML = ""
+                LocationPanel.innerHTML = ""
                 sendGetRestaurant(SearchText,EntityId,EntityType);
             }else{
                 alert("Enter restaurants/cuisines/dish")
@@ -255,15 +254,24 @@ function CreateResto(url,name,address,contact,cuisin,cost,rating,timings){
     Timings.innerText = "Timings: "+timings
     DetailsCol.appendChild(RestoName)
     ImageCol.appendChild(img)
-    ResultRow.appendChild(ImageCol)
-    ResultRow.appendChild(DetailsCol)
     DetailsCol.appendChild(RestoCusins)
     DetailsCol.appendChild(RestoAddress)
     DetailsCol.appendChild(RestoContact)
     DetailsCol.appendChild(Cost)
     DetailsCol.appendChild(Timings)
     DetailsCol.appendChild(Rating)
+    ResultRow.appendChild(ImageCol)
+    ResultRow.appendChild(DetailsCol)
     
+}
+
+function Notfound(){
+    let notFoundDiv = document.createElement("div");
+    notFoundDiv.classList.add("col-lg-12","col-md-12","col-sm-6","mt-3","text-center")
+    let notFoundText = document.createElement("h2");
+    notFoundText.innerText = "Sorry... Restaurant Not Found!";
+    notFoundDiv.appendChild(notFoundText);
+    ResultRow.appendChild(notFoundDiv)
 }
 
 
