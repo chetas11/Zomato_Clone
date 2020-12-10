@@ -3,9 +3,9 @@
 #### Description: Clone of Zomato website using the zomato api
 
 #### What can you do - 
-- fetch all the Restaurants
+- Fetch all the Restaurants
 - Search according to your location
-- get all information about Restaurants
+- Get all information about Restaurants
 
 #### Check out the working example: https://zomato-clone-chetas11.netlify.app/
 
