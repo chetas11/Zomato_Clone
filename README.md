@@ -18,7 +18,7 @@
 - OAuth for authentication
 
 #### references - 
-- https://developers.google.com/gmail/api
+- https://developers.zomato.com/api
 - https://getbootstrap.com/
 - https://developer.mozilla.org/en-US/
 
