@@ -23,5 +23,5 @@
 - https://developer.mozilla.org/en-US/
 
 
-![Image 1](https://github.com/chetas11/Gmail_Clone/blob/master/Screenshot_2020-12-09%20Mail.png)
+![Image 1](https://github.com/chetas11/Zomato_Clone/blob/master/images/ZomatoAPP_Screenshot.png)
 
